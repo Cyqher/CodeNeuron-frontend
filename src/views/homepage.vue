@@ -146,7 +146,7 @@ export default {
         message: "New message.",
         description: "Click to see detail",
         onClick: () => {
-          this.goToChat();
+          this.goToTeamCenter();
         },
       });
     },

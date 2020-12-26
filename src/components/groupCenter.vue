@@ -72,6 +72,7 @@
               </div>
               </a-col>
               <a-col :span="16">
+                <chat-page :tabKey="tabKey" :current="current"></chat-page>
               </a-col>
             </a-row>
             <!-- 没ownedPage 显示空 -->
@@ -144,6 +145,9 @@
 
 <script>
 import debounce from "lodash/debounce";
+import chatPage from "../components/chatpage";
+import workspace from "./workspace";
+import projectCenter from "./projectCenter";
 export default {
   created() {
     this.updateGroups();
@@ -176,7 +180,12 @@ export default {
       toGroupId: 0,
       toGroupName: "",
       toUserId: 0,
+      tabKey: 1,
+      current: 0
     };
+  },
+  components: {
+    chatPage
   },
   computed: {
     currentGroup() {
@@ -343,15 +352,18 @@ export default {
       this.message = e.target.value;
     },
     sendGrpMsg(gid, gname) {
-      this.toGroupId = gid;
-      this.toGroupName = gname;
-      this.messageType = 0;
-      this.messageVisible = true;
+      // this.toGroupId = gid;
+      // this.toGroupName = gname;
+      // this.messageType = 0;
+      // this.messageVisible = true;
+      this.tabKey = 3;
     },
     sendPersonalMsg(uid) {
-      this.toUserId = uid;
-      this.messageType = 1;
-      this.messageVisible = true;
+      // this.toUserId = uid;
+      // this.messageType = 1;
+      // this.messageVisible = true;
+      this.tabKey=2;
+      this.current = uid;
     },
     cancelMessage() {
       this.message = "";
