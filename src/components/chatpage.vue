@@ -1,6 +1,6 @@
 <template>
-  <a-layout-content :style="{ padding: '0 10px', marginTop: '64px' }" style="background-color:#fff">
-    <a-card style="height:700px">
+  <a-layout-content :style="{ padding: '0 10px' }" style="background-color:#fff">
+    <a-card style="height:700px; border: none">
       <a-tabs :activeKey="key" @change="changeTab" tabPosition="left">
         <a-tab-pane tab="Invitation" :precision="2" :key="1">
           <a-empty v-if="data.length==0" style="margin-top:100px"></a-empty>
@@ -225,7 +225,7 @@ export default {
             var k;
             for (k in allMsgs) {
               this.personalData.push({
-                id: k,
+                id: allMsgs[k].userId,
                 name: allMsgs[k].userName,
               });
               this.personalMsg[k] = allMsgs[k].msgs;

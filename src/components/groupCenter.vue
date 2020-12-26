@@ -71,7 +71,9 @@
                 </a-card>
               </div>
               </a-col>
-              <a-col :span="16"></a-col>
+              <a-col :span="16">
+                <chat-page></chat-page>
+              </a-col>
             </a-row>
             <!-- 没ownedPage 显示空 -->
             <a-empty v-if="ownedPage[1]" style="margin-top:100px">
@@ -143,6 +145,9 @@
 
 <script>
 import debounce from "lodash/debounce";
+import chatPage from "../components/chatpage";
+import workspace from "./workspace";
+import projectCenter from "./projectCenter";
 export default {
   created() {
     this.updateGroups();
@@ -176,6 +181,9 @@ export default {
       toGroupName: "",
       toUserId: 0,
     };
+  },
+  components: {
+    chatPage
   },
   computed: {
     currentGroup() {
