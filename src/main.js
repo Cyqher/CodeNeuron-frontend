@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
-import router from './router'
+import router from './router/router'
 import axios from 'axios'
 import userStore from './store/UserStore'
 import Clipboard from 'v-clipboard'
@@ -12,7 +12,7 @@ import VueHighlightJS from 'vue-highlightjs'
 import 'highlight.js/styles/atelier-sulphurpool-light.css'
 import uploader from 'vue-simple-uploader'
 
- 
+
 Vue.prototype.$axios=axios
 Vue.prototype.$cytoscape=cytoscape
 

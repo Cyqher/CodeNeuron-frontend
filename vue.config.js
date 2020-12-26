@@ -10,7 +10,7 @@ module.exports = {
                 }
             },
             '/socket':{
-                target:'http://47.102.205.136:8091/',//TODO:push前改回去
+                target:'http://localhost:8091/',//TODO:push前改回去
                 changeOrigin: true,
                 ws:true,
                 pathRewrite: {

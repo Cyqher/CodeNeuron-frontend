@@ -42,32 +42,37 @@
             <a-spin v-if="joinedPage[2]" size="large" />
           </a-tab-pane>
           <a-tab-pane tab="Owned" :precision="2" :key="2">
-            <div style="display:flex;flex-wrap:wrap;" v-if="ownedPage[0]">
-              <a-card
-                :title="group.name"
-                style="margin:30px;width: 300px"
-                v-for="group in ownedGroups"
-                :key="group.id"
-              >
-                <a-icon slot="extra" type="message" @click="sendGrpMsg(group.id,group.name)" />
-                <a slot="extra" @click="showInvitationModal(group.id,group.name)">
-                  <a-icon type="plus" />INVITE
-                </a>
-                <p v-for="teammate in group.teammates" :key="teammate.id">
-                  {{teammate.name}}
-                  <span v-if="teammate.id==group.leaderId">
+            <a-row :gutter=[16,16]>
+              <a-col :span="8">
+              <div style="display:flex;flex-wrap:wrap;" v-if="ownedPage[0]">
+                <a-card
+                        :title="group.name"
+                        style="margin:30px;width: 300px"
+                        v-for="group in ownedGroups"
+                        :key="group.id"
+                >
+                  <a-icon slot="extra" type="message" @click="sendGrpMsg(group.id,group.name)" />
+                  <a slot="extra" @click="showInvitationModal(group.id,group.name)">
+                    <a-icon type="plus" />INVITE
+                  </a>
+                  <p v-for="teammate in group.teammates" :key="teammate.id">
+                    {{teammate.name}}
+                    <span v-if="teammate.id==group.leaderId">
                     <b>
                       <i>Leader</i>
                     </b>
                   </span>
-                  <a-icon
-                    v-if="teammate.id!=user.id"
-                    type="message"
-                    @click="sendPersonalMsg(teammate.id)"
-                  />
-                </p>
-              </a-card>
-            </div>
+                    <a-icon
+                            v-if="teammate.id!=user.id"
+                            type="message"
+                            @click="sendPersonalMsg(teammate.id)"
+                    />
+                  </p>
+                </a-card>
+              </div>
+              </a-col>
+              <a-col :span="16"></a-col>
+            </a-row>
             <!-- 没ownedPage 显示空 -->
             <a-empty v-if="ownedPage[1]" style="margin-top:100px">
               <span slot="description">You have not created any group.</span>

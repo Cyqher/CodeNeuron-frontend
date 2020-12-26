@@ -121,7 +121,7 @@ export default {
     initWebSocket: function () {
       console.log(this.user);
       this.websock = new WebSocket(
-        "ws://47.102.205.136:8091/websocket/" + this.user.id
+        "ws://localhost:8091/websocket/" + this.user.id
       );
       this.websock.onopen = this.websocketonopen;
       this.websock.onerror = this.websocketonerror;
