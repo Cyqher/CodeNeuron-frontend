@@ -141,10 +141,8 @@ export default {
       allNodes.forEach((node) => {
         if (node._private.data.id == val.name) {
           node.emit("click");
-          if (this.cy.zoom() < 0.28) {
-            this.cy.zoom(0.28);
-          }
           node.select();
+          this.cy.zoom(2);
           this.cy.center(node);
         } else {
           node.unselect();
@@ -210,9 +208,7 @@ export default {
           edge.unselect();
         }
       });
-      if (this.cy.zoom() < 0.28) {
-        this.cy.zoom(0.28);
-      }
+      this.cy.zoom(2);
     },
   },
   name: "cytoscape",
@@ -256,7 +252,8 @@ export default {
           name: "preset",
           fit:true
         },
-        minZoom: 0.003,
+        minZoom: 0.28,
+        maxZoom: 3,
         style: [
           {
             selector: "node",
@@ -304,7 +301,7 @@ export default {
       // cy.add(this.edges);
 
       let data_this = this;
-      this.cy=cy;
+      data_this.cy=cy;
       cy.on("mouseover", "node", function (event) {
         let node = event.target;
         if (isNaN(node.id())) {
@@ -359,6 +356,7 @@ export default {
         event.target.style("target-arrow-color", "#9dbaea");
         event.target.style("width", "1");
       });
+      this.cy = cy;
       // var layout = cy.layout({
       //   name: 'preset',
       //   //positions: this.positions,

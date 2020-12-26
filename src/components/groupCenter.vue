@@ -71,7 +71,8 @@
                 </a-card>
               </div>
               </a-col>
-              <a-col :span="16"></a-col>
+              <a-col :span="16">
+              </a-col>
             </a-row>
             <!-- 没ownedPage 显示空 -->
             <a-empty v-if="ownedPage[1]" style="margin-top:100px">
