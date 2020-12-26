@@ -1,31 +1,29 @@
 <template>
   <a-layout-content :style="{ padding: '0 10px', marginTop: '64px'}" style="background-color:#fff">
     <a-row :gutter="16">
-      <a-col :span="5">
-        <a-row>
-          <searchpaths ></searchpaths>
-        </a-row>
-        <a-row>
-          <structure></structure>
-        </a-row>
-      </a-col>
-      <a-col :span="14">
-        <a-row>
-          <graph></graph>
-        </a-row>
-        <a-row>
-          <detail></detail>
-        </a-row>
-      </a-col>
-      <a-col :span="5">
+      <a-col :span="8">
         <a-row>
           <wsinfo ></wsinfo>
+        </a-row>
+        <a-row>
+          <searchpaths ></searchpaths>
         </a-row>
         <a-row>
           <commentInfo></commentInfo>
         </a-row>
         <a-row>
           <funccode></funccode>
+        </a-row>
+        <a-row>
+          <structure></structure>
+        </a-row>
+      </a-col>
+      <a-col :span="16">
+        <a-row>
+          <graph></graph>
+        </a-row>
+        <a-row>
+          <detail></detail>
         </a-row>
       </a-col>
     </a-row>
