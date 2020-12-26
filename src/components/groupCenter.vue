@@ -72,7 +72,7 @@
               </div>
               </a-col>
               <a-col :span="16">
-                <chat-page></chat-page>
+                <chat-page :tabKey="tabKey" :current="current"></chat-page>
               </a-col>
             </a-row>
             <!-- 没ownedPage 显示空 -->
@@ -180,6 +180,8 @@ export default {
       toGroupId: 0,
       toGroupName: "",
       toUserId: 0,
+      tabKey: 1,
+      current: 0
     };
   },
   components: {
@@ -350,15 +352,18 @@ export default {
       this.message = e.target.value;
     },
     sendGrpMsg(gid, gname) {
-      this.toGroupId = gid;
-      this.toGroupName = gname;
-      this.messageType = 0;
-      this.messageVisible = true;
+      // this.toGroupId = gid;
+      // this.toGroupName = gname;
+      // this.messageType = 0;
+      // this.messageVisible = true;
+      this.tabKey = 3;
     },
     sendPersonalMsg(uid) {
-      this.toUserId = uid;
-      this.messageType = 1;
-      this.messageVisible = true;
+      // this.toUserId = uid;
+      // this.messageType = 1;
+      // this.messageVisible = true;
+      this.tabKey=2;
+      this.current = uid;
     },
     cancelMessage() {
       this.message = "";

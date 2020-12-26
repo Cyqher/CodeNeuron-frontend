@@ -1,7 +1,7 @@
 <template>
   <a-layout-content :style="{ padding: '0 10px' }" style="background-color:#fff">
     <a-card style="height:700px; border: none">
-      <a-tabs :activeKey="key" @change="changeTab" tabPosition="left">
+      <a-tabs :activeKey="tabKey" @change="changeTab" tabPosition="left">
         <a-tab-pane tab="Invitation" :precision="2" :key="1">
           <a-empty v-if="data.length==0" style="margin-top:100px"></a-empty>
           <a-list v-else item-layout="horizontal" :data-source="data" style="width:60%">
@@ -141,13 +141,15 @@ export default {
     this.updatePersonalMsgs();
     this.updateGroupMsgs();
   },
+  props:{
+    tabKey: Number,
+    current: Number
+  },
   data() {
     return {
-      key: 1,
       data: [],
       personalData: [],
       personalMsg: {},
-      current: 0,
       personalMsgInputValue: "",
       groupData: [],
       groupMsg: {},
@@ -162,7 +164,7 @@ export default {
   },
   methods: {
     changeTab(key) {
-      this.key = key;
+      this.tabKey = key;
     },
     updateInvitation() {
       this.$axios
