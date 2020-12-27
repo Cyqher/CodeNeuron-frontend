@@ -36,7 +36,7 @@
       </a-menu>
     </a-layout-header>
     <!-- <keep-alive>TODO:more state -->
-      <workspace v-if="currentPage=='workspace'" style="min-height:100vh"></workspace>
+      <workspace v-if="currentPage=='workspace'" style="height:100%"></workspace>
     <!-- </keep-alive> -->
     <!-- <keep-alive> -->
       <projectCenter v-if="currentPage=='projectCenter'" style="min-height:100vh"></projectCenter>
@@ -45,7 +45,6 @@
       <teamCenter v-if="currentPage=='teamCenter'" style="min-height:100vh"></teamCenter>
     <!-- </keep-alive> -->
     <chat-page v-if="currentPage=='chatPage'&&update" style="min-height:100vh"></chat-page>
-    <a-layout-footer :style="{ textAlign: 'center' }">©2020 Created by Code Neuron</a-layout-footer>
   </a-layout>
 </template>
 <script>

@@ -36,7 +36,7 @@
       placeholder="Press Enter to Search"
       @pressEnter="onSearch"
     />
-    <div class="container" style="height:300px">
+    <div class="container" style="height:auto;overflow:auto">
       <a-tree
         @expand="onExpand"
         :expandedKeys="expandedKeys"

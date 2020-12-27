@@ -2,6 +2,7 @@
   <a-layout-content :style="{ padding: '0 10px', marginTop: '64px'}" style="background-color:#fff">
     <a-row :gutter="16">
       <a-col :span="8">
+        <div class="func">
         <a-row>
           <wsinfo ></wsinfo>
         </a-row>
@@ -17,8 +18,9 @@
         <a-row>
           <structure></structure>
         </a-row>
+        </div>
       </a-col>
-      <a-col :span="16">
+      <a-col :span="16" class="graph">
         <a-row>
           <graph></graph>
         </a-row>
@@ -86,6 +88,15 @@ export default {
   background: rgba(255, 255, 255, 0.2);
   margin: 16px 24px 16px 0;
   float: left;
+}
+.func{
+  border-right: 3px solid #D0D0D0;
+  overflow-y: scroll;
+  height: calc(100vh - 64px);
+}
+.graph{
+  overflow:hidden;
+  height: calc(100vh - 64px);
 }
 </style>
 
