@@ -143,7 +143,8 @@ export default {
   },
   props:{
     tabKey: Number,
-    current: Number
+    current: Number,
+    currentGroup: Number
   },
   data() {
     return {
@@ -153,7 +154,7 @@ export default {
       personalMsgInputValue: "",
       groupData: [],
       groupMsg: {},
-      currentGroup: 0,
+      // currentGroup: 0,
       groupMsgInputValue: "",
     };
   },
@@ -254,7 +255,7 @@ export default {
             var k;
             for (k in allMsgs) {
               this.groupData.push({
-                id: k,
+                id: allMsgs[k].team_id,
                 name: allMsgs[k].team_name,
               });
               this.groupMsg[k] = allMsgs[k].msgs;

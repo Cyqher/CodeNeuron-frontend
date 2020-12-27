@@ -72,7 +72,7 @@
               </div>
               </a-col>
               <a-col :span="16">
-                <chat-page :tabKey="tabKey" :current="current"></chat-page>
+                <chat-page :tabKey="tabKey" :current="current" :currentGroup="currentGroupKey"></chat-page>
               </a-col>
             </a-row>
             <!-- 没ownedPage 显示空 -->
@@ -162,6 +162,7 @@ export default {
       loading: false,
       confirmLoading: false,
       key: 1,
+      CompoKey: 0,
       joinedPage: [false, false, true],
       ownedPage: [false, false, true],
       joinedGroups: [],
@@ -181,7 +182,8 @@ export default {
       toGroupName: "",
       toUserId: 0,
       tabKey: 1,
-      current: 0
+      current: 0,
+      currentGroupKey: 0
     };
   },
   components: {
@@ -357,6 +359,7 @@ export default {
       // this.messageType = 0;
       // this.messageVisible = true;
       this.tabKey = 3;
+      this.currentGroupKey = gid;
     },
     sendPersonalMsg(uid) {
       // this.toUserId = uid;
@@ -390,6 +393,7 @@ export default {
           } else {
             console.log(res.data.message);
           }
+          this.currentGroupKey = this.toGroupId;
         });
       } else if (this.messageType == 1) {
         if (this.message.length == 0) {
