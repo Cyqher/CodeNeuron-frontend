@@ -72,7 +72,7 @@
             <div style="flex: 8">
               <a-card style="height: 500px; overflow: auto">
                 <div v-if="current != 0">
-                <div style="font-size:20px">To {{ charTitle }}</div>
+                <div style="font-size:20px">{{ chatTitle }}</div>
                   <div style="margin-top: 10px">
                     <a-textarea
                       :value="personalMsgInputValue"
@@ -139,7 +139,8 @@
             <div style="flex: 8">
               <a-card style="height: 500px; overflow: auto">
                 <div v-if="currentGroup != 0">
-                  <div>
+                  <div style="font-size:20px">{{ chatGroupTitle }}</div>
+                  <div style="margin-top: 10px">
                     <a-textarea
                       :value="groupMsgInputValue"
                       placeholder="Input your message..."
@@ -205,6 +206,7 @@ export default {
       // currentGroup: 0,
       groupMsgInputValue: "",
       chatTitle: "",
+      chatGroupTitle: "",
     };
   },
   watch: {
@@ -215,13 +217,15 @@ export default {
           this.chatTitle = "To " + this.personalData[k].name;
         }
       }
-      // let namearray = this.personalData.map((item) => {
-      //   if(item.id == newval){
-      //     return item;
-      //   }
-      // });
-      // this.charTitle = "To " + namearray[0].name;
     },
+    currentGroup(newval, oldval) {
+      var k;
+      for (k in this.groupData) {
+        if (this.groupData[k].id == newval) {
+          this.chatGroupTitle = "To " + this.groupData[k].name;
+        }
+      }
+    }
   },
   computed: {
     user() {
