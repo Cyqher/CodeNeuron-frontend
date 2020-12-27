@@ -1,25 +1,44 @@
 <template>
-  <a-layout-content :style="{ padding: '0 10px' }" style="background-color:#fff">
-    <a-card style="height:700px; border: none">
+  <a-layout-content
+    :style="{ padding: '0 10px' }"
+    style="background-color: #fff"
+  >
+    <a-card style="height: 700px; border: none">
       <a-tabs :activeKey="tabKey" @change="changeTab" tabPosition="left">
         <a-tab-pane tab="Invitation" :precision="2" :key="1">
-          <a-empty v-if="data.length==0" style="margin-top:100px"></a-empty>
-          <a-list v-else item-layout="horizontal" :data-source="data" style="width:60%">
+          <a-empty v-if="data.length == 0" style="margin-top: 100px"></a-empty>
+          <a-list
+            v-else
+            item-layout="horizontal"
+            :data-source="data"
+            style="width: 60%"
+          >
             <a-list-item slot="renderItem" slot-scope="item">
               <a
                 slot="actions"
-                v-if="item.state==0"
-                @click="acceptInvitation(item.id,item.teamId)"
-              >Accept</a>
-              <a slot="actions" v-if="item.state==0" @click="refuseInvitation(item.id)">Refuse</a>
-              <a slot="actions" v-if="item.state==1">You have accepted</a>
-              <a slot="actions" v-if="item.state==2">You have refused</a>
-              <a-list-item-meta :description="item.time.format('YYYY-MM-DD HH:mm:ss')">
+                v-if="item.state == 0"
+                @click="acceptInvitation(item.id, item.teamId)"
+                >Accept</a
+              >
+              <a
+                slot="actions"
+                v-if="item.state == 0"
+                @click="refuseInvitation(item.id)"
+                >Refuse</a
+              >
+              <a slot="actions" v-if="item.state == 1">You have accepted</a>
+              <a slot="actions" v-if="item.state == 2">You have refused</a>
+              <a-list-item-meta
+                :description="item.time.format('YYYY-MM-DD HH:mm:ss')"
+              >
                 <a slot="title">
-                  <span style="font-size:20px;">{{ item.fromUsername+' '}}</span> invite you to join group
-                  <span
-                    style="font-size:20px;"
-                  >{{' \''+item.teamName +'\''}}</span>
+                  <span style="font-size: 20px">{{
+                    item.fromUsername + " "
+                  }}</span>
+                  invite you to join group
+                  <span style="font-size: 20px">{{
+                    " '" + item.teamName + "'"
+                  }}</span>
                 </a>
               </a-list-item-meta>
             </a-list-item>
@@ -27,13 +46,21 @@
         </a-tab-pane>
         <a-tab-pane tab="Personal" :precision="2" :key="2">
           <div
-            style="display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between;width:100%"
+            style="
+              display: flex;
+              flex-direction: row;
+              flex-wrap: nowrap;
+              justify-content: space-between;
+              width: 100%;
+            "
           >
-            <div style="flex:2">
+            <div style="flex: 2">
               <a-list item-layout="horizontal" :data-source="personalData">
                 <a-list-item slot="renderItem" slot-scope="item">
                   <a-list-item-meta>
-                    <a slot="title" @click="changeCurrentUser(item.id)">{{ item.name }}</a>
+                    <a slot="title" @click="changeCurrentUser(item.id)">{{
+                      item.name
+                    }}</a>
                     <a-avatar
                       slot="avatar"
                       src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -42,35 +69,36 @@
                 </a-list-item>
               </a-list>
             </div>
-            <div style="flex:8;">
-              <a-card style="height:500px;overflow:auto">
-                <div v-if="current!=0">
-                  <a-page-header
-                          style="border: 1px solid rgb(235, 237, 240);font-size: 14px"
-                          title="chatTitle"
-                          sub-title="ghgchggxfhg"
-                  />
-                  <br>
-                  <div style="margin-top:20px;">
+            <div style="flex: 8">
+              <a-card style="height: 500px; overflow: auto">
+                <div v-if="current != 0">
+                <div style="font-size:20px">To {{ charTitle }}</div>
+                  <div style="margin-top: 10px">
                     <a-textarea
                       :value="personalMsgInputValue"
                       placeholder="Input your message..."
                       allow-clear
                       @change="changePersonalMsgInputValue"
                       :auto-size="{ minRows: 3, maxRows: 5 }"
-                      style="width:70%;margin-right:10px;"
+                      style="width: 70%; margin-right: 10px"
                     />
-                    <a-button @click="sendPersonalMessage(current)">Send</a-button>
+                    <a-button @click="sendPersonalMessage(current)"
+                      >Send</a-button
+                    >
                   </div>
                   <a-list
                     item-layout="horizontal"
                     :data-source="personalMsg[current]"
-                    style="height:80%"
+                    style="height: 80%"
                   >
                     <a-list-item slot="renderItem" slot-scope="item">
-                      <a-list-item-meta :description="item.time.format('YYYY-MM-DD HH:mm:ss')">
+                      <a-list-item-meta
+                        :description="item.time.format('YYYY-MM-DD HH:mm:ss')"
+                      >
                         <a slot="title">
-                          <span v-if="item.from_username.length!=0">{{item.from_username +':'}}</span>
+                          <span v-if="item.from_username.length != 0">{{
+                            item.from_username + ":"
+                          }}</span>
                           <span v-else>You:</span>
                           {{ item.content }}
                         </a>
@@ -78,20 +106,28 @@
                     </a-list-item>
                   </a-list>
                 </div>
-                <a-empty v-else style="margin-top:100px"></a-empty>
+                <a-empty v-else style="margin-top: 100px"></a-empty>
               </a-card>
             </div>
           </div>
         </a-tab-pane>
         <a-tab-pane tab="Group" :precision="2" :key="3">
           <div
-            style="display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between;width:100%"
+            style="
+              display: flex;
+              flex-direction: row;
+              flex-wrap: nowrap;
+              justify-content: space-between;
+              width: 100%;
+            "
           >
-            <div style="flex:2">
+            <div style="flex: 2">
               <a-list item-layout="horizontal" :data-source="groupData">
                 <a-list-item slot="renderItem" slot-scope="item">
                   <a-list-item-meta>
-                    <a slot="title" @click="changeCurrentGroup(item.id)">{{ item.name }}</a>
+                    <a slot="title" @click="changeCurrentGroup(item.id)">{{
+                      item.name
+                    }}</a>
                     <a-avatar
                       slot="avatar"
                       src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -100,9 +136,9 @@
                 </a-list-item>
               </a-list>
             </div>
-            <div style="flex:8;">
-              <a-card style="height:500px;overflow:auto">
-                <div v-if="currentGroup!=0">
+            <div style="flex: 8">
+              <a-card style="height: 500px; overflow: auto">
+                <div v-if="currentGroup != 0">
                   <div>
                     <a-textarea
                       :value="groupMsgInputValue"
@@ -110,26 +146,32 @@
                       allow-clear
                       @change="changeGroupMsgInputValue"
                       :auto-size="{ minRows: 3, maxRows: 5 }"
-                      style="width:70%;margin-right:10px"
+                      style="width: 70%; margin-right: 10px"
                     />
-                    <a-button @click="sendGroupMessage(currentGroup)">Send</a-button>
+                    <a-button @click="sendGroupMessage(currentGroup)"
+                      >Send</a-button
+                    >
                   </div>
                   <a-list
                     item-layout="horizontal"
                     :data-source="groupMsg[currentGroup]"
-                    style="height:80%"
+                    style="height: 80%"
                   >
                     <a-list-item slot="renderItem" slot-scope="item">
-                      <a-list-item-meta :description="item.time.format('YYYY-MM-DD HH:mm:ss')">
+                      <a-list-item-meta
+                        :description="item.time.format('YYYY-MM-DD HH:mm:ss')"
+                      >
                         <a slot="title">
-                          <span v-if="item.fromUsername.length!=0">{{item.fromUsername +':'}}</span>
+                          <span v-if="item.fromUsername.length != 0">{{
+                            item.fromUsername + ":"
+                          }}</span>
                           {{ item.content }}
                         </a>
                       </a-list-item-meta>
                     </a-list-item>
                   </a-list>
                 </div>
-                <a-empty v-else style="margin-top:100px"></a-empty>
+                <a-empty v-else style="margin-top: 100px"></a-empty>
               </a-card>
             </div>
           </div>
@@ -147,10 +189,10 @@ export default {
     this.updatePersonalMsgs();
     this.updateGroupMsgs();
   },
-  props:{
+  props: {
     tabKey: Number,
     current: Number,
-    currentGroup: Number
+    currentGroup: Number,
   },
   data() {
     return {
@@ -168,9 +210,9 @@ export default {
   watch: {
     current(newval, oldval) {
       var k;
-      for (k in this.personalData){
-        if (this.personalData[k].id == newval){
-          this.chatTitle = "To "+this.personalData[k].name;
+      for (k in this.personalData) {
+        if (this.personalData[k].id == newval) {
+          this.chatTitle = "To " + this.personalData[k].name;
         }
       }
       // let namearray = this.personalData.map((item) => {
@@ -179,7 +221,7 @@ export default {
       //   }
       // });
       // this.charTitle = "To " + namearray[0].name;
-    }
+    },
   },
   computed: {
     user() {
