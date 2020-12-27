@@ -1,7 +1,9 @@
 <template>
   <a-card title="代码依赖图" :bordered="false">
-    <a-button @click="createCytoscape" slot="extra" type="primary">Refresh!</a-button>
-    <div style="text-align:center" v-if="visibleOption[0]">
+    <a-button @click="createCytoscape" slot="extra" type="primary"
+      >Refresh!</a-button
+    >
+    <div style="text-align: center" v-if="visibleOption[0]">
       <a-spin size="large" />
     </div>
     <a-empty v-if="visibleOption[1]">
@@ -18,7 +20,8 @@
           :loading="iconLoading"
           @click="enterIconLoading"
           class="center"
-        >开始渲染代码依赖图</a-button>
+          >开始渲染代码依赖图</a-button
+        >
       </div>
       <div id="cy" ref="cy"></div>
     </div>
@@ -250,7 +253,7 @@ export default {
         autolock: false,
         layout: {
           name: "preset",
-          fit:true
+          fit: true,
         },
         minZoom: 0.28,
         maxZoom: 3,
@@ -301,7 +304,7 @@ export default {
       // cy.add(this.edges);
 
       let data_this = this;
-      data_this.cy=cy;
+      this.cy = cy;
       cy.on("mouseover", "node", function (event) {
         let node = event.target;
         if (isNaN(node.id())) {
@@ -347,6 +350,13 @@ export default {
             data_this.$store.commit("changeFocusEdge", edge);
             data_this.$store.commit("changeType", "edge");
             data_this.$store.commit("changeIfSelect", 1);
+            let allNodes = cy.filter("node");
+            allNodes.forEach((node) => {
+              if (node._private.data.id == edge.callerName) {
+                cy.zoom(2);
+                cy.center(node);
+              }
+            });
           }
         });
       });
