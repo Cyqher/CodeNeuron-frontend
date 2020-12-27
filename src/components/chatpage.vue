@@ -45,14 +45,20 @@
             <div style="flex:8;">
               <a-card style="height:500px;overflow:auto">
                 <div v-if="current!=0">
-                  <div>
+                  <a-page-header
+                          style="border: 1px solid rgb(235, 237, 240);font-size: 14px"
+                          title="chatTitle"
+                          sub-title="ghgchggxfhg"
+                  />
+                  <br>
+                  <div style="margin-top:20px;">
                     <a-textarea
                       :value="personalMsgInputValue"
                       placeholder="Input your message..."
                       allow-clear
                       @change="changePersonalMsgInputValue"
                       :auto-size="{ minRows: 3, maxRows: 5 }"
-                      style="width:70%;margin-right:10px"
+                      style="width:70%;margin-right:10px;"
                     />
                     <a-button @click="sendPersonalMessage(current)">Send</a-button>
                   </div>
@@ -156,7 +162,24 @@ export default {
       groupMsg: {},
       // currentGroup: 0,
       groupMsgInputValue: "",
+      chatTitle: "",
     };
+  },
+  watch: {
+    current(newval, oldval) {
+      var k;
+      for (k in this.personalData){
+        if (this.personalData[k].id == newval){
+          this.chatTitle = "To "+this.personalData[k].name;
+        }
+      }
+      // let namearray = this.personalData.map((item) => {
+      //   if(item.id == newval){
+      //     return item;
+      //   }
+      // });
+      // this.charTitle = "To " + namearray[0].name;
+    }
   },
   computed: {
     user() {
