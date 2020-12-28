@@ -2,83 +2,114 @@
   <div>
     <a-layout-content
       :style="{ padding: '10px 15px', marginTop: '64px' }"
-      style="background-color:#fff;min-height:100vh"
+      style="background-color: #fff; min-height: 100vh"
     >
-      <a-card style="height:auto"  :bordered="false">
+      <a-card style="height: auto" :bordered="false">
         <a-tabs :activeKey="key" @change="changeTab" tabPosition="left">
           <a-tab-pane tab="Joined" :precision="2" :key="1">
-            <div style="display:flex;flex-wrap:wrap;" v-if="joinedPage[0]">
-              <a-card
-                :title="group.name"
-                style="margin:30px;width: 300px"
-                v-for="group in joinedGroups"
-                :key="group.id"
-              >
-                <a-icon slot="extra" type="message" @click="sendGrpMsg(group.id,group.name)" />
-                <!-- <a slot="extra">
+            <a-row :gutter="[16, 16]">
+              <a-col :span="8">
+                <div
+                  style="display: flex; flex-wrap: wrap"
+                  v-if="joinedPage[0]"
+                >
+                  <a-card
+                    :title="group.name"
+                    style="margin: 30px; width: 300px"
+                    v-for="group in joinedGroups"
+                    :key="group.id"
+                  >
+                    <a-icon
+                      slot="extra"
+                      type="message"
+                      @click="sendGrpMsg(group.id, group.name)"
+                    />
+                    <!-- <a slot="extra">
                   <a-icon type="plus" />INVITE
                 </a>-->
-                <p v-for="teammate in group.teammates" :key="teammate.id">
-                  {{teammate.name}}
-                  <span v-if="teammate.id==group.leaderId">
-                    <b>
-                      <i>Leader</i>
-                    </b>
-                  </span>
-                  <a-icon
-                    @click="sendPersonalMsg(teammate.id)"
-                    v-if="teammate.id!=user.id"
-                    type="message"
-                  />
-                </p>
-              </a-card>
-            </div>
-            <!-- 没joinedPage 显示空 -->
-            <a-empty v-if="joinedPage[1]" style="margin-top:100px">
-              <span slot="description">You have not joined any group.</span>
-            </a-empty>
+                    <p v-for="teammate in group.teammates" :key="teammate.id">
+                      {{ teammate.name }}
+                      <span v-if="teammate.id == group.leaderId">
+                        <b>
+                          <i>Leader</i>
+                        </b>
+                      </span>
+                      <a-icon
+                        @click="sendPersonalMsg(teammate.id)"
+                        v-if="teammate.id != user.id"
+                        type="message"
+                      />
+                    </p>
+                  </a-card>
+                </div>
+                <!-- 没joinedPage 显示空 -->
+                <a-empty v-if="joinedPage[1]" style="margin-top: 100px">
+                  <span slot="description">You have not joined any group.</span>
+                </a-empty>
+              </a-col>
+              <a-col :span="16">
+                <chat-page
+                  :tabKey="tabKey"
+                  :current="current"
+                  :currentGroup="currentGroupKey"
+                ></chat-page>
+              </a-col>
+            </a-row>
 
             <!-- 加载时显示loading状态 -->
             <a-spin v-if="joinedPage[2]" size="large" />
           </a-tab-pane>
           <a-tab-pane tab="Owned" :precision="2" :key="2">
-            <a-row :gutter=[16,16]>
+            <a-row :gutter="[16, 16]">
               <a-col :span="8">
-              <div style="display:flex;flex-wrap:wrap;" v-if="ownedPage[0]">
-                <a-card
-                        :title="group.name"
-                        style="margin:30px;width: 300px"
-                        v-for="group in ownedGroups"
-                        :key="group.id"
-                >
-                  <a-icon slot="extra" type="message" @click="sendGrpMsg(group.id,group.name)" />
-                  <a slot="extra" @click="showInvitationModal(group.id,group.name)">
-                    <a-icon type="plus" />INVITE
-                  </a>
-                  <p v-for="teammate in group.teammates" :key="teammate.id">
-                    {{teammate.name}}
-                    <span v-if="teammate.id==group.leaderId">
-                    <b>
-                      <i>Leader</i>
-                    </b>
-                  </span>
+                <div style="display: flex; flex-wrap: wrap" v-if="ownedPage[0]">
+                  <a-card
+                    :title="group.name"
+                    style="margin: 30px; width: 300px"
+                    v-for="group in ownedGroups"
+                    :key="group.id"
+                  >
                     <a-icon
-                            v-if="teammate.id!=user.id"
-                            type="message"
-                            @click="sendPersonalMsg(teammate.id)"
+                      slot="extra"
+                      type="message"
+                      @click="sendGrpMsg(group.id, group.name)"
                     />
-                  </p>
-                </a-card>
-              </div>
+                    <a
+                      slot="extra"
+                      @click="showInvitationModal(group.id, group.name)"
+                    >
+                      <a-icon type="plus" />INVITE
+                    </a>
+                    <p v-for="teammate in group.teammates" :key="teammate.id">
+                      {{ teammate.name }}
+                      <span v-if="teammate.id == group.leaderId">
+                        <b>
+                          <i>Leader</i>
+                        </b>
+                      </span>
+                      <a-icon
+                        v-if="teammate.id != user.id"
+                        type="message"
+                        @click="sendPersonalMsg(teammate.id)"
+                      />
+                    </p>
+                  </a-card>
+                </div>
+                <!-- 没ownedPage 显示空 -->
+                <a-empty v-if="ownedPage[1]" style="margin-top: 100px">
+                  <span slot="description"
+                    >You have not created any group.</span
+                  >
+                </a-empty>
               </a-col>
               <a-col :span="16">
-                <chat-page :tabKey="tabKey" :current="current" :currentGroup="currentGroupKey"></chat-page>
+                <chat-page
+                  :tabKey="tabKey"
+                  :current="current"
+                  :currentGroup="currentGroupKey"
+                ></chat-page>
               </a-col>
             </a-row>
-            <!-- 没ownedPage 显示空 -->
-            <a-empty v-if="ownedPage[1]" style="margin-top:100px">
-              <span slot="description">You have not created any group.</span>
-            </a-empty>
 
             <!-- 加载时显示loading状态 -->
             <a-spin v-if="ownedPage[2]" size="large" />
@@ -87,8 +118,9 @@
             type="primary"
             @click="createGroup"
             slot="tabBarExtraContent"
-            style="margin-top:70px"
-          >Create</a-button>
+            style="margin-top: 70px"
+            >Create</a-button
+          >
         </a-tabs>
       </a-card>
     </a-layout-content>
@@ -125,7 +157,9 @@
         @change="handleChange"
       >
         <a-spin v-if="fetching" slot="notFoundContent" size="small" />
-        <a-select-option v-for="d in invitationData" :key="d.id">{{ d.name }}</a-select-option>
+        <a-select-option v-for="d in invitationData" :key="d.id">{{
+          d.name
+        }}</a-select-option>
       </a-select>
     </a-modal>
     <a-modal
@@ -183,11 +217,11 @@ export default {
       toUserId: 0,
       tabKey: 1,
       current: 0,
-      currentGroupKey: 0
+      currentGroupKey: 0,
     };
   },
   components: {
-    chatPage
+    chatPage,
   },
   computed: {
     currentGroup() {
@@ -365,7 +399,7 @@ export default {
       // this.toUserId = uid;
       // this.messageType = 1;
       // this.messageVisible = true;
-      this.tabKey=2;
+      this.tabKey = 2;
       this.current = uid;
     },
     cancelMessage() {

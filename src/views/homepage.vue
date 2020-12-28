@@ -110,7 +110,7 @@ export default {
     },
     goToChat() {
       this.notificationCount = 0;
-      this.$store.commit("changeCurrentPage", "chatPage");
+      this.$store.commit("changeCurrentPage", "teamCenter");
     },
     Logout() {
       localStorage.removeItem("name");
