@@ -1,7 +1,7 @@
 #eslint-disable-line no-unused-vars
 <template>
-  <a-layout-content :style="{ padding: '0 10px', marginTop: '64px' }" style="background-color:#fff">
-    <a-card style="height:700px" :bordered="false">
+  <a-layout-content :style="{ padding: '10px 15px', marginTop: '64px' }" style="background-color:#fff">
+    <a-card style="height:auto" :bordered="false">
       <!-- 有project  显示tab -->
       <a-tabs :activeKey="key" @change="changeTab" tabPosition="left" v-if="page[0]">
         <a-tab-pane

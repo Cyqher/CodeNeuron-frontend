@@ -4,7 +4,7 @@
       :style="{ padding: '10px 15px', marginTop: '64px' }"
       style="background-color:#fff;min-height:100vh"
     >
-      <a-card style="height:700px"  :bordered="false">
+      <a-card style="height:auto"  :bordered="false">
         <a-tabs :activeKey="key" @change="changeTab" tabPosition="left">
           <a-tab-pane tab="Joined" :precision="2" :key="1">
             <div style="display:flex;flex-wrap:wrap;" v-if="joinedPage[0]">

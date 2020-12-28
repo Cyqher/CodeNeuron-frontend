@@ -288,7 +288,7 @@ export default {
     },
     updatePersonalMsgs() {
       this.$axios
-        .get("/socket/message/30d?userId=" + this.user.id)
+        .get("/socket/message/friends?userId=" + this.user.id)
         .then((res) => {
           if (res.data.success) {
             this.personalData = [];
@@ -315,7 +315,7 @@ export default {
     },
     updateGroupMsgs() {
       this.$axios
-        .get("/socket/message/group30d?userId=" + this.user.id)
+        .get("/socket/message/group?userId=" + this.user.id)
         .then((res) => {
           if (res.data.success) {
             this.groupData = [];
