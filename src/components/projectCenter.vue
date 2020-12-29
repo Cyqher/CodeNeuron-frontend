@@ -1,71 +1,80 @@
 #eslint-disable-line no-unused-vars
 <template>
-  <a-layout-content :style="{ padding: '10px 15px', marginTop: '64px' }" style="background-color:#fff">
-    <a-card style="height:auto" :bordered="false">
+  <a-layout-content
+    :style="{ padding: '10px 15px', marginTop: '64px' }"
+    style="background-color: #fff"
+  >
+    <a-card style="height: auto" :bordered="false">
       <!-- 有project  显示tab -->
-      <a-tabs :activeKey="key" @change="changeTab" tabPosition="left" v-if="page[0]">
-        <a-tab-pane
-          tab="Project Overview"
-          :key="key"
-          >
-          <div
-            style="display: flex; flex-wrap: wrap"
-          >
-          <a-card
-            class="ProjectCard"
-            :title="project.name"
-            v-for="project in allProjectInfo"
-            :key="project.id"
-          >
-          <div>
-            <a-statistic title="Project Name" :value="project.name" />
-            <a-statistic title="Team Name" :value="project.teamName" />
-            <a-statistic title="Nodes count" :value="project.nodecount" style="margin-right: 50px" />
-            <a-statistic title="Edges count" :value="project.edgecount" />
-            <a-statistic
-              title="Current Closeness Threshold"
-              :precision="2"
-              :value="project.closenessThreshold"
-            />
-          </div>
+      <a-tabs
+        :activeKey="key"
+        @change="changeTab"
+        tabPosition="left"
+        v-if="page[0]"
+      >
+        <a-tab-pane tab="Project Overview" :key="key">
+          <div style="display: flex; flex-wrap: wrap">
+            <a-card
+              class="ProjectCard"
+              :title="project.name"
+              v-for="project in allProjectInfo"
+              :key="project.id"
+            >
+              <div>
+                <a-statistic title="Project Name" :value="project.name" />
+                <a-statistic title="Team Name" :value="project.teamName" />
+                <a-statistic
+                  title="Nodes count"
+                  :value="project.nodecount"
+                  style="margin-right: 50px"
+                />
+                <a-statistic title="Edges count" :value="project.edgecount" />
+                <a-statistic
+                  title="Current Closeness Threshold"
+                  :precision="2"
+                  :value="project.closenessThreshold"
+                />
+              </div>
 
-          <!-- 只在nodes数为0时显示上传文件 -->
-          <div v-show="project.show">
-            <br />
-            <br />
-            <p slot="description">
-              <b>
-                You have not uploaded source code for this project.
-                <br />Please upload a
-                <i>.jar</i> and a
-                <i>.zip</i> file for your project.<br/>
-                Please upload <i>.jar</i> file first, after success, upload your <i>.zip</i> file.
-              </b>
-            </p>
-            <div>
-              <uploader
-                :key="uploader_key"
-                :options="options"
-                class="uploader-example"
-                :autoStart="false"
-                @file-success="onFileSuccess"
-                @file-added="filesAdded"
-              >
-                <uploader-unsupport></uploader-unsupport>
-                <uploader-drop>
-                  <uploader-btn :single="true" :attrs="attrs">select Files</uploader-btn>
-                </uploader-drop>
-                <uploader-list></uploader-list>
-              </uploader>
-            </div>
-            <br />
-            <p slot="description">
-              <b>
-                After <i>uploading</i>, click here!
-              </b>
-            </p>
-            <a-button type="primary" @click="finishUpload">Finish!</a-button>
-            <!-- <a-upload :fileList="fileList" :remove="handleRemove" :beforeUpload="beforeUpload">
+              <!-- 只在nodes数为0时显示上传文件 -->
+              <div v-show="project.show">
+                <br />
+                <br />
+                <p slot="description">
+                  <b>
+                    You have not uploaded source code for this project.
+                    <br />Please upload a <i>.jar</i> and a <i>.zip</i> file for
+                    your project.<br />
+                    Please upload <i>.jar</i> file first, after success, upload
+                    your <i>.zip</i> file.
+                  </b>
+                </p>
+                <div>
+                  <uploader
+                    :key="uploader_key"
+                    :options="options"
+                    class="uploader-example"
+                    :autoStart="false"
+                    @file-success="onFileSuccess"
+                    @file-added="filesAdded"
+                  >
+                    <uploader-unsupport></uploader-unsupport>
+                    <uploader-drop>
+                      <uploader-btn :single="true" :attrs="attrs"
+                        >select Files</uploader-btn
+                      >
+                    </uploader-drop>
+                    <uploader-list></uploader-list>
+                  </uploader>
+                </div>
+                <br />
+                <p slot="description">
+                  <b> After <i>uploading</i>, click here! </b>
+                </p>
+                <a-button type="primary" @click="finishUpload"
+                  >Finish!</a-button
+                >
+                <!-- <a-upload :fileList="fileList" :remove="handleRemove" :beforeUpload="beforeUpload">
               <a-button>
                 <a-icon type="upload" />Select File
               </a-button>
@@ -77,39 +86,49 @@
               :loading="uploading"
               style="margin-top: 16px"
             >{{uploading ? 'Uploading' : 'Start Upload' }}</a-button>-->
-          </div>
-          <div></div>
-          <br />
-          <div v-show="project.isLeader==true">
-            <p>
-              <b>
-                Delete this project.
-                <br />Once deleted, the project can never be restored.
-              </b>
-            </p>
-            <a-button type="danger" ghost @click="deleteProject">Delete this project</a-button>
-          </div>
-          <div v-show="project.isLeader==false">
-            <p>
-              <b>You are not the leader of your group, so you can't delete this project.</b>
-            </p>
-            <a-button type="danger" disabled ghost @click="deleteProject">Delete this project</a-button>
-          </div>
-          </a-card>
+              </div>
+              <div></div>
+              <br />
+              <div v-show="project.isLeader == true">
+                <p>
+                  <b>
+                    Delete this project.
+                    <br />Once deleted, the project can never be restored.
+                  </b>
+                </p>
+                <a-button type="danger" ghost @click="deleteProject"
+                  >Delete this project</a-button
+                >
+              </div>
+              <div v-show="project.isLeader == false">
+                <p>
+                  <b
+                    >You are not the leader of your group, so you can't delete
+                    this project.</b
+                  >
+                </p>
+                <a-button type="danger" disabled ghost @click="deleteProject"
+                  >Delete this project</a-button
+                >
+              </div>
+            </a-card>
           </div>
         </a-tab-pane>
         <a-button
           type="primary"
           @click="goCreate"
           slot="tabBarExtraContent"
-          style="margin-top:70px"
-        >Create</a-button>
+          style="margin-top: 70px"
+          >Create</a-button
+        >
       </a-tabs>
 
       <!-- 没project 显示空 -->
-      <a-empty v-if="page[1]" style="margin-top:100px">
+      <a-empty v-if="page[1]" style="margin-top: 100px">
         <span slot="description">No projects.</span>
-        <a-button type="primary" @click="goCreate">Create a project now!</a-button>
+        <a-button type="primary" @click="goCreate"
+          >Create a project now!</a-button
+        >
       </a-empty>
 
       <!-- 加载时显示loading状态 -->
@@ -136,7 +155,8 @@
             v-for="group in groups"
             :key="group.id"
             :value="group.id"
-          >{{ group.name }}</a-select-option>
+            >{{ group.name }}</a-select-option
+          >
         </a-select>
       </a-modal>
       <a-modal
@@ -548,7 +568,7 @@ export default {
   overflow-y: auto;
 }
 .ProjectCard {
-  margin: 30px; 
+  margin: 30px;
   width: 700px;
   height: auto;
   max-height: 550px;
