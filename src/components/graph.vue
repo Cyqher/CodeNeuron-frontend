@@ -1,8 +1,14 @@
 <template>
   <a-card title="代码依赖图" :bordered="false">
-    <a-button @click="createCytoscape" slot="extra" type="primary"
+    <template slot="extra">
+      <a-button key="2" style="margin-right:10px">
+        <a-icon type="search" />
+        Search Paths
+      </a-button>
+      <a-button @click="createCytoscape" key="1" type="primary"
       >Refresh!</a-button
     >
+    </template>
     <div style="text-align: center" v-if="visibleOption[0]">
       <a-spin size="large" />
     </div>
