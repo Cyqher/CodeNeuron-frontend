@@ -1,5 +1,5 @@
 <template>
-  <a-card title="目录结构" :bordered="false" class="outter-container">
+  <a-card title="Project Stucture" :bordered="false" class="outter-container">
     <a-button @click="showModal" slot="extra">Expand</a-button>
     <a-modal v-model="visible" onOk="handleOk" width="800px" :bodyStyle="body">
       <template slot="footer">

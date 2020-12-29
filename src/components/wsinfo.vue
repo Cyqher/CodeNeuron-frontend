@@ -1,8 +1,8 @@
 <template>
-  <a-card title="项目" :bordered="false">
+  <a-card title="Project Info" :bordered="false">
     <a-dropdown slot="extra">
       <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-        切换工作区
+        Switch Workspace
         <a-icon type="down" />
       </a>
       <a-menu slot="overlay">
@@ -10,15 +10,15 @@
           <a
             @click="changeProject(project.id)"
             v-if="project.name==current.name"
-          >{{project.name}}(当前)</a>
+          >{{project.name}}(current)</a>
           <a @click="changeProject(project.id)" v-else>{{project.name}}</a>
         </a-menu-item>
       </a-menu>
     </a-dropdown>
     <div v-if="this.all.length!=0">
-      <p>工作区名：{{this.current.name}}</p>
-      <p>紧密度阈值：{{this.current.closenessThreshold}}</p>
-      <p>设置阈值：(0-1之间)</p>
+      <p><i>Workspace Name</i>：{{this.current.name}}</p>
+      <p><i>Clossness Threshold</i>：{{this.current.closenessThreshold}}</p>
+      <p><i>Set Threshold：(0-1 between)</i></p>
       <a-input-number
         size="small"
         :min="0"
@@ -27,7 +27,7 @@
         @change="onChange"
         :defaultValue="this.current.closenessThreshold"
       />
-      <a-popconfirm title="确定更新阈值吗？" @confirm="updateThreshold" okText="是" cancelText="否" style="margin-left:8px">
+      <a-popconfirm title="Are you sure to update the threshold？" @confirm="updateThreshold" okText="Yes" cancelText="No" style="margin-left:8px">
         <a href="#" >Update</a>
       </a-popconfirm>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <a-card title="代码依赖图" :bordered="false">
     <template slot="extra">
-      <a-button key="2" style="margin-right:10px">
+      <a-button key="2" style="margin-right:10px" @click="showModal">
         <a-icon type="search" />
         Search Paths
       </a-button>
@@ -31,13 +31,21 @@
       </div>
       <div id="cy" ref="cy"></div>
     </div>
+    <a-modal v-model="visible" title="Search Paths" class="modal-container" @ok="handleOK" okText="Search" width="800px">
+      <searchpaths ref="getAllpath">
+      </searchpaths>
+    </a-modal>
   </a-card>
 </template>
 
 <script>
+import searchpaths from "./searchpaths"
 /*eslint-disable*/
 export default {
   mounted() {},
+  components: {
+    searchpaths
+  },
   computed: {
     currentProject() {
       return this.$store.state.current;
@@ -211,7 +219,7 @@ export default {
           ) != -1
         ) {
           centeredEles.push(edge);
-          edge.style("label", edge._private.data.closeness);
+          edge.style("label", edge._private.data.closeness.toFixed(2));
           edge.select();
         } else {
           edge.unselect();
@@ -229,12 +237,23 @@ export default {
       nodeName: "",
       visibleOption: [true, false, false],
       timer: "",
+      visible: false,
       iconLoading: false,
     };
   },
   methods: {
     goUpload() {
       this.$store.commit("changeCurrentPage", "projectCenter");
+    },
+    showModal() {
+      this.visible = true;
+    },
+    handleOK() {
+      this.getSearchResult();
+      this.visible = false;
+    },
+    getSearchResult() {
+      this.$refs.getAllpath.getAllPaths()
     },
     enterIconLoading() {
       this.timer = setTimeout(this.showGraph(), 3000);

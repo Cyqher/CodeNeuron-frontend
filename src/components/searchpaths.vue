@@ -1,5 +1,5 @@
 <template>
-  <a-card title="搜索" :bordered="false">
+  <div>
     <div style="margin-bottom: 16px">
       <a-auto-complete
         :value="from"
@@ -25,8 +25,7 @@
         style="width: 100%"
       />
     </div>
-    <a-button type="primary" icon="search" @click="getAllPaths">Search</a-button>
-  </a-card>
+  </div>
 </template>
 
 <script>

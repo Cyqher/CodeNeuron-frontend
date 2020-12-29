@@ -1,5 +1,5 @@
 <template>
-  <a-card title="代码" :bordered="false">
+  <a-card title="Code" :bordered="false">
     <a-button @click="showModal" slot="extra">Expand</a-button>
     <a-modal v-model="visible" :title="name" class="modal-container" onOk="handleOk" width="800px">
       <template slot="footer">

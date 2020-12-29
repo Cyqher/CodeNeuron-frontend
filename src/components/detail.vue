@@ -1,19 +1,19 @@
 <template>
-  <a-card title="选中元素详细信息" :bordered="false">
+  <a-card title="Element Selected Detail Info" :bordered="false">
     <div v-if="this.Type=='node'">
-        <p>元素类型:  {{this.Type}}</p>
-      <p>节点名称：{{this.Name}}</p>
+        <p><i>Element Type</i>：{{this.Type}}</p>
+      <p><i>Node Name</i>：{{this.Name}}</p>
     </div>
     <div v-else-if="this.Type=='edge'">
-        <p>元素类型:  {{this.Type}}</p>
-        <p>源节点: {{this.source}}</p>
-        <p>目标节点: {{this.target}}</p>
-        <p>紧密度: {{this.closeness}}</p>
-        <p>引用类型: {{this.typeOfCall}}</p>
+        <p><i>Element Type</i>:  {{this.Type}}</p>
+        <p><i>Source Node</i>: {{this.source}}</p>
+        <p><i>Target Node</i>: {{this.target}}</p>
+        <p><i>Closeness</i>: {{this.closeness}}</p>
+        <p><i>Reference Type</i>: {{this.typeOfCall}}</p>
     </div>
     <div v-else-if="this.Type=='domain'">
-        <p>元素类型:  {{this.Type}}</p>
-        <p>包含节点个数: {{this.includedNode}}</p>
+        <p><i>Element Type</i>:  {{this.Type}}</p>
+        <p><i>Number of Nodes included</i>: {{this.includedNode}}</p>
     </div>
     <a-empty v-else></a-empty>
   </a-card>

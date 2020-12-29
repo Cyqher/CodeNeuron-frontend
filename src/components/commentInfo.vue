@@ -29,16 +29,15 @@
   </a-form>
   </a-card>
   <a-card :bordered="false">
-    
     <a-list
       class="comment-list"
       item-layout="horizontal"
       :data-source="data"
-      style="height:200px;overflow:auto"
+      style="height:auto;"
     >
-    <template slot="header">
-      {{data.length}} replies 
-      <a  @click="addComment">ADD</a>
+    <template slot="header" style="position:relative">
+      {{data.length}} Comments Added
+      <a-button @click="addComment" style="position:absolute;right:10">ADD</a-button>
     </template>
       <a-list-item slot="renderItem" slot-scope="item">
         <a-comment :author="item.userName">
