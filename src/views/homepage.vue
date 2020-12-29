@@ -35,15 +35,15 @@
         </a-menu-item>
       </a-menu>
     </a-layout-header>
-    <!-- <keep-alive>TODO:more state -->
+    <keep-alive>
       <workspace v-if="currentPage=='workspace'" style="height:100%"></workspace>
-    <!-- </keep-alive> -->
-    <!-- <keep-alive> -->
+    </keep-alive>
+    <keep-alive>
       <projectCenter v-if="currentPage=='projectCenter'" style="min-height:100vh"></projectCenter>
-    <!-- </keep-alive> -->
-    <!-- <keep-alive> -->
+    </keep-alive>
+    <keep-alive>
       <teamCenter v-if="currentPage=='teamCenter'" style="min-height:100vh"></teamCenter>
-    <!-- </keep-alive> -->
+    </keep-alive>
     <chat-page v-if="currentPage=='chatPage'&&update" style="min-height:100vh"></chat-page>
   </a-layout>
 </template>

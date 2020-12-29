@@ -5,11 +5,18 @@
       <!-- 有project  显示tab -->
       <a-tabs :activeKey="key" @change="changeTab" tabPosition="left" v-if="page[0]">
         <a-tab-pane
-          :tab="project.name"
-          :key="project.id"
-          :precision="2"
-          v-for="project in allProjectInfo"
-        >
+          tab="Project Overview"
+          :key="key"
+          >
+          <div
+            style="display: flex; flex-wrap: wrap"
+          >
+          <a-card
+            class="ProjectCard"
+            :title="project.name"
+            v-for="project in allProjectInfo"
+            :key="project.id"
+          >
           <div>
             <a-statistic title="Project Name" :value="project.name" />
             <a-statistic title="Team Name" :value="project.teamName" />
@@ -87,6 +94,8 @@
               <b>You are not the leader of your group, so you can't delete this project.</b>
             </p>
             <a-button type="danger" disabled ghost @click="deleteProject">Delete this project</a-button>
+          </div>
+          </a-card>
           </div>
         </a-tab-pane>
         <a-button
@@ -200,7 +209,7 @@ export default {
       page: [false, false, true],
       uploader_key: new Date().getTime(),
       options: {
-        target: '',
+        target: "",
         testChunks: false,
       },
       attrs: {
@@ -272,7 +281,6 @@ export default {
       computeMD5Success(md5, file) {
         file.uniqueIdentifier = md5; //把md5值作为文件的识别码
         file.resume(); //开始上传
-
       },
       filesAdded(file, event) {
         //大小判断
@@ -413,7 +421,7 @@ export default {
     },
     changeTab(key) {
       this.key = key;
-      this.options.target = "/api/chunk/chunkUpload/"+this.key;
+      this.options.target = "/api/chunk/chunkUpload/" + this.key;
     },
     handleChange(info) {
       const status = info.file.status;
@@ -482,7 +490,7 @@ export default {
     deleteProject() {
       this.deleteVisible = true;
     },
-    finishUpload(){
+    finishUpload() {
       let that = this;
       that.$store.commit("updateAll");
     },
@@ -538,5 +546,14 @@ export default {
   overflow: auto;
   overflow-x: hidden;
   overflow-y: auto;
+}
+.ProjectCard {
+  margin: 30px; 
+  width: 700px;
+  height: auto;
+  max-height: 550px;
+  overflow: auto;
+  overflow-y: scroll;
+  border: 1px solid grey;
 }
 </style>
