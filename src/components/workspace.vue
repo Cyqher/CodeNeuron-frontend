@@ -7,9 +7,6 @@
           <wsinfo ></wsinfo>
         </a-row>
         <a-row>
-          <searchpaths ></searchpaths>
-        </a-row>
-        <a-row>
           <commentInfo></commentInfo>
         </a-row>
         <a-row>
@@ -32,7 +29,6 @@
   </a-layout-content>
 </template>
 <script>
-import searchpaths from "./searchpaths";
 import structure from "./structure";
 import funccode from "./funccode";
 import graph from "./graph";
@@ -70,7 +66,6 @@ export default {
 
   },
   components: {
-    searchpaths,
     structure,
     funccode,
     graph,
