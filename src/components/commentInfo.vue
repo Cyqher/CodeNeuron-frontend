@@ -37,14 +37,14 @@
     >
     <template slot="header" style="position:relative">
       {{data.length}} Comments Added
-      <a-button @click="addComment" style="position:absolute;right:10">ADD</a-button>
+      <a-button @click="addComment" style="position:absolute;right:0">ADD</a-button>
     </template>
       <a-list-item slot="renderItem" slot-scope="item">
         <a-comment :author="item.userName">
           <template slot="actions">
             <span v-for="action in item.actions" :key="action">
               <a-popconfirm
-                title="确定删除吗？"
+                title="Sure to delete？"
                 @confirm="deleteAction(item)"
                 okText="是"
                 cancelText="否"

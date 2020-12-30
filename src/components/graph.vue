@@ -1,5 +1,5 @@
 <template>
-  <a-card title="代码依赖图" :bordered="false">
+  <a-card title="Code Dependency Graph" :bordered="false">
     <template slot="extra">
       <a-button key="2" style="margin-right:10px" @click="showModal">
         <a-icon type="search" />
@@ -26,7 +26,7 @@
           :loading="iconLoading"
           @click="enterIconLoading"
           class="center"
-          >开始渲染代码依赖图</a-button
+          >Start Rendering Code Dependency Graph</a-button
         >
       </div>
       <div id="cy" ref="cy"></div>

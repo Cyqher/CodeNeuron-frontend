@@ -19,6 +19,7 @@
               :title="project.name"
               v-for="project in allProjectInfo"
               :key="project.id"
+              ref="projects"
             >
               <div>
                 <a-statistic title="Project Name" :value="project.name" />
@@ -49,43 +50,10 @@
                     your <i>.zip</i> file.
                   </b>
                 </p>
-                <div>
-                  <uploader
-                    :key="uploader_key"
-                    :options="options"
-                    class="uploader-example"
-                    :autoStart="false"
-                    @file-success="onFileSuccess"
-                    @file-added="filesAdded"
-                  >
-                    <uploader-unsupport></uploader-unsupport>
-                    <uploader-drop>
-                      <uploader-btn :single="true" :attrs="attrs"
-                        >select Files</uploader-btn
-                      >
-                    </uploader-drop>
-                    <uploader-list></uploader-list>
-                  </uploader>
-                </div>
+                <a-button @click="showUploadModal(project.id)">
+                  Start Uploading
+                </a-button>
                 <br />
-                <p slot="description">
-                  <b> After <i>uploading</i>, click here! </b>
-                </p>
-                <a-button type="primary" @click="finishUpload"
-                  >Finish!</a-button
-                >
-                <!-- <a-upload :fileList="fileList" :remove="handleRemove" :beforeUpload="beforeUpload">
-              <a-button>
-                <a-icon type="upload" />Select File
-              </a-button>
-            </a-upload>
-            <a-button
-              type="primary"
-              @click="handleUpload"
-              :disabled="checkFile"
-              :loading="uploading"
-              style="margin-top: 16px"
-            >{{uploading ? 'Uploading' : 'Start Upload' }}</a-button>-->
               </div>
               <div></div>
               <br />
@@ -96,7 +64,7 @@
                     <br />Once deleted, the project can never be restored.
                   </b>
                 </p>
-                <a-button type="danger" ghost @click="deleteProject"
+                <a-button type="danger" ghost @click="deleteProject(project.id)"
                   >Delete this project</a-button
                 >
               </div>
@@ -172,6 +140,33 @@
           @change="changeDeleteProjectName"
         ></a-input>
       </a-modal>
+      <a-modal
+        title="Upload Files"
+        :visible="uploadModalVisible"
+        @ok="finishUpload"
+        okText="Finish"
+        :confirmLoading="confirmLoading"
+        @cancel="handleUploadCancel"
+      >
+        <div>
+          <uploader
+            :key="uploader_key"
+            :options="options"
+            class="uploader-example"
+            :autoStart="false"
+            @file-success="onFileSuccess"
+            @file-added="filesAdded"
+          >
+            <uploader-unsupport></uploader-unsupport>
+            <uploader-drop>
+              <uploader-btn :single="true" :attrs="attrs"
+                >select Files</uploader-btn
+              >
+            </uploader-drop>
+            <uploader-list></uploader-list>
+          </uploader>
+        </div>
+      </a-modal>
     </a-card>
   </a-layout-content>
 </template>
@@ -181,6 +176,7 @@ export default {
   created() {
     {
       this.updateProjectList();
+      console.log(this.$refs.projects.key);
     }
   },
   computed: {
@@ -235,82 +231,88 @@ export default {
       attrs: {
         accept: [".zip", ".jar"],
       },
+      uploadModalVisible: false,
+      uploadKey: -1,
+      deleteId: -1
     };
   },
   methods: {
-    methods: {
-      onFileSuccess: function (rootFile, file, response, chunk) {
-        console.log(JSON.parse(response).model);
-        this.updateProjectList();
-      },
-      computeMD5(file) {
-        const loading = this.$loading({
-          lock: true,
-          text: "正在计算MD5",
-          spinner: "el-icon-loading",
-          background: "rgba(0, 0, 0, 0.7)",
-        });
-        let fileReader = new FileReader();
-        let time = new Date().getTime();
-        let blobSlice =
-          File.prototype.slice ||
-          File.prototype.mozSlice ||
-          File.prototype.webkitSlice;
-        let currentChunk = 0;
-        const chunkSize = 10 * 1024 * 1000;
-        let chunks = Math.ceil(file.size / chunkSize);
-        let spark = new SparkMD5.ArrayBuffer();
-        file.pause();
+    showUploadModal(id) {
+      this.uploadModalVisible = true;
+      this.uploadKey = id;
+      this.options.target = "/api/chunk/chunkUpload/" + this.uploadKey;
+    },
+    onFileSuccess: function (rootFile, file, response, chunk) {
+      console.log(JSON.parse(response).model);
+      this.updateProjectList();
+    },
+    computeMD5(file) {
+      const loading = this.$loading({
+        lock: true,
+        text: "正在计算MD5",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      let fileReader = new FileReader();
+      let time = new Date().getTime();
+      let blobSlice =
+        File.prototype.slice ||
+        File.prototype.mozSlice ||
+        File.prototype.webkitSlice;
+      let currentChunk = 0;
+      const chunkSize = 10 * 1024 * 1000;
+      let chunks = Math.ceil(file.size / chunkSize);
+      let spark = new SparkMD5.ArrayBuffer();
+      file.pause();
 
-        loadNext();
+      loadNext();
 
-        fileReader.onload = (e) => {
-          spark.append(e.target.result);
-          if (currentChunk < chunks) {
-            currentChunk++;
-            loadNext();
-            this.$nextTick(() => {
-              console.log(
-                "校验MD5 " + ((currentChunk / chunks) * 100).toFixed(0) + "%"
-              );
-            });
-          } else {
-            let md5 = spark.end();
-            loading.close();
-            this.computeMD5Success(md5, file);
+      fileReader.onload = (e) => {
+        spark.append(e.target.result);
+        if (currentChunk < chunks) {
+          currentChunk++;
+          loadNext();
+          this.$nextTick(() => {
             console.log(
-              `MD5计算完毕：${file.name} \nMD5：${md5} \n分片：${chunks} 大小:${
-                file.size
-              } 用时：${new Date().getTime() - time} ms`
+              "校验MD5 " + ((currentChunk / chunks) * 100).toFixed(0) + "%"
             );
-          }
-        };
-        fileReader.onerror = function () {
-          this.error(`文件${file.name}读取出错，请检查该文件`);
-          loading.close();
-          file.cancel();
-        };
-
-        function loadNext() {
-          let start = currentChunk * chunkSize;
-          let end =
-            start + chunkSize >= file.size ? file.size : start + chunkSize;
-          fileReader.readAsArrayBuffer(blobSlice.call(file.file, start, end));
-        }
-      },
-      computeMD5Success(md5, file) {
-        file.uniqueIdentifier = md5; //把md5值作为文件的识别码
-        file.resume(); //开始上传
-      },
-      filesAdded(file, event) {
-        //大小判断
-        const isLt100M = file.size / 1024 / 1024 < 10;
-        if (!isLt100M) {
-          this.$message.error(this.$t("error.error_upload_file_max"));
+          });
         } else {
-          this.computeMD5(file);
+          let md5 = spark.end();
+          loading.close();
+          this.computeMD5Success(md5, file);
+          console.log(
+            `MD5计算完毕：${file.name} \nMD5：${md5} \n分片：${chunks} 大小:${
+              file.size
+            } 用时：${new Date().getTime() - time} ms`
+          );
         }
-      },
+      };
+      fileReader.onerror = function () {
+        this.error(`文件${file.name}读取出错，请检查该文件`);
+        loading.close();
+        file.cancel();
+      };
+
+      function loadNext() {
+        let start = currentChunk * chunkSize;
+        let end =
+          start + chunkSize >= file.size ? file.size : start + chunkSize;
+        fileReader.readAsArrayBuffer(blobSlice.call(file.file, start, end));
+      }
+    },
+    computeMD5Success(md5, file) {
+      file.uniqueIdentifier = md5; //把md5值作为文件的识别码
+      file.resume(); //开始上传
+    },
+    filesAdded(file, event) {
+      //大小判断
+      const isLt100M = file.size / 1024 / 1024 < 10;
+      if (!isLt100M) {
+        this.$message.error(this.$t("error.error_upload_file_max"));
+      } else {
+        this.computeMD5(file);
+      }
     },
 
     updateProjectList() {
@@ -434,6 +436,9 @@ export default {
         });
       }
     },
+    handleUploadCancel() {
+      this.uploadModalVisible = false;
+    },
     handleCancel() {
       this.visible = false;
       this.newProjectName = "";
@@ -477,12 +482,12 @@ export default {
       }
       this.uploading = true;
       let zipRequest = this.$axios.post(
-        "/api/codeAnalysis/uploadzip?id=" + this.key,
+        "/api/codeAnalysis/uploadzip?id=" + this.uploadKey,
         zipFormData
       );
 
       let jarRequest = this.$axios.post(
-        "/api/codeAnalysis/uploadjar?id=" + this.key,
+        "/api/codeAnalysis/uploadjar?id=" + this.uploadKey,
         jarFormData
       );
       let that = this;
@@ -507,11 +512,13 @@ export default {
       console.log(e);
       this.newProjectTeam = e;
     },
-    deleteProject() {
+    deleteProject(id) {
       this.deleteVisible = true;
+      this.deleteId = id;
     },
     finishUpload() {
       let that = this;
+      that.uploadModalVisible = false;
       that.$store.commit("updateAll");
     },
     handleDeleteCancel() {
@@ -523,18 +530,19 @@ export default {
     },
     handleDeleteOk() {
       let target = this.allProjectInfo.filter(
-        (project) => project.id == this.key
+        (project) => project.id == this.deleteId
       );
       if (target[0].name == this.deleteProjectName) {
         this.deleteConfirmLoading = true;
 
         this.$axios
-          .delete("/api/project/delete?projectId=" + this.key)
+          .delete("/api/project/delete?projectId=" + this.deleteId)
           .then((res) => {
             if (res.data.success) {
               this.deleteConfirmLoading = false;
               this.deleteProjectName = "";
               this.deleteVisible = false;
+              this.deleteId = -1;
               this.$store.commit("updateAll");
             } else {
               this.$message.error(res.data.message);

@@ -207,6 +207,7 @@ export default {
       groupMsgInputValue: "",
       chatTitle: "",
       chatGroupTitle: "",
+      currentGroupName: ""
     };
   },
   watch: {
@@ -223,6 +224,7 @@ export default {
       for (k in this.groupData) {
         if (this.groupData[k].id == newval) {
           this.chatGroupTitle = "To " + this.groupData[k].name;
+          this.currentGroupName = this.groupData[k].name;
         }
       }
     }
@@ -266,6 +268,7 @@ export default {
               if (res.data.success) {
                 this.$message.success("Joined successfully");
                 this.updateInvitation();
+                location.reload();
               } else {
                 console.log(res.data.message);
               }
@@ -330,6 +333,7 @@ export default {
               this.groupMsg[k] = allMsgs[k].msgs;
               this.groupMsg[k].forEach((msg) => {
                 msg.time = moment(msg.time);
+                msg.teamName = allMsgs[k].team_name;
               });
               this.groupMsg[k].reverse();
             }
@@ -371,6 +375,9 @@ export default {
       });
     },
     sendGroupMessage(currentGroup) {
+      console.log(this.groupMsgInputValue);
+      console.log(this.groupMsg);
+      console.log(this.groupData[currentGroup]);
       if (this.groupMsgInputValue.length == 0) {
         this.$message.error("Cannot send empty message");
         return;
@@ -379,9 +386,10 @@ export default {
         fromUser: this.user.id,
         fromUsername: this.user.name,
         groupId: currentGroup,
-        groupName: this.groupMsg[currentGroup][0].teamName,
+        groupName: this.currentGroupName,
         content: this.groupMsgInputValue,
       };
+      console.log(data);
       this.$axios.post("/socket/message/sendGrpMsg", data).then((res) => {
         if (res.data.success) {
           this.$message.success("Send successfully");
