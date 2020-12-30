@@ -13,10 +13,6 @@
           <a-icon type="bar-chart" />
           <span class="nav-text">Statistics</span>
         </a-menu-item>
-        <a-menu-item key="2" @click="goToAdmins">
-          <a-icon type="user" />
-          <span class="nav-text">Admins</span>
-        </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout :style="{ marginLeft: '250px','min-height':'100vh' }">
